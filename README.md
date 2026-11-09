@@ -42,6 +42,16 @@ PYTHONPATH=src:scripts python -m unittest discover -s tests
 
 Ray tracing needs the `simulation` extra (Sionna RT 2.0.1, GPU recommended). NEC-2 extraction needs PyNEC.
 
+## Reproducibility
+
+Every stage is seeded and records the hashes of its inputs, so rerunning the pipeline reproduces the same cases: the same sites, users, groups, trajectories and labels.
+
+Regeneration is exact **up to floating-point rounding**, not bit-for-bit across machines:
+- Different CPUs and math libraries can round the last binary digit differently. Continuous columns such as angles may differ by about 1e-14 between machines, far below any physical effect.
+- Different `pyarrow` versions can lay out Parquet files differently, even for identical data.
+
+So a regenerated file can have a different SHA-256 than the released one while holding the same data. **The released dataset files are the reference.** Their SHA-256 hashes are listed in the dataset's `provenance.json`, and the production pipeline only ever reads cases from a registered, hash-checked manifest; it never regenerates them. To compare a regenerated case with the release, compare the values with a tolerance (for example `numpy.allclose` with `atol=1e-9`), not the file hashes.
+
 ## Documentation
 
 - `docs/methodology/`: dated design and protocol records. Criteria are declared before each run.
