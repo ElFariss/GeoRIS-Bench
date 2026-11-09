@@ -1,0 +1,39 @@
+{
+  "status": "geometry_only_proposals_pending_map_approval",
+  "date": "2026-11-08",
+  "bounds_convention": "projected metres, xmin/ymin inclusive and xmax/ymax exclusive",
+  "buildings": "usable publisher LoD2 geometry is primary; no OSM substitutions silently counted as LoD2",
+  "areas": [
+    {
+      "id": "munich", "name": "Munich Marienplatz–Frauenkirche", "role": "development", "form": "dense historic core",
+      "epsg": 25832, "vertical_epsg": 7837, "bounds_m": [691383, 5334560, 691823, 5335000], "kind": "bavaria",
+      "buildings_url": "https://download1.bayernwolke.de/a/lod2/citygml/690_5334.gml",
+      "buildings_sha256": "232c75a398ec7ee81736aeb72f7eda374f88b9431f8c35cdbee18a51ff029e87",
+      "terrain_url": "https://download1.bayernwolke.de/a/dgm/dgm1/691_5334.tif",
+      "terrain_sha256": "ddfed9fdbe2e69e8f8143acb7f5a483f49e07b381b9f6fe4b9d52a40e02f381c"
+    },
+    {
+      "id": "rotterdam", "name": "Rotterdam Lijnbaan–Coolsingel", "role": "development", "form": "postwar modern orthogonal blocks and wide avenues",
+      "epsg": 28992, "vertical_epsg": 5709, "bounds_m": [92286, 436839, 92726, 437279], "kind": "netherlands"
+    },
+    {
+      "id": "maastricht", "name": "Maastricht Jekerkwartier and city-wall edge", "role": "development", "form": "historic blocks, raised ramparts and ground relief",
+      "epsg": 28992, "vertical_epsg": 5709, "bounds_m": [175967, 316952, 176407, 317392], "kind": "netherlands"
+    },
+    {
+      "id": "berlin", "name": "Berlin Friedrichstadt–Gendarmenmarkt", "role": "paper_a_heldout", "form": "perimeter blocks, grid streets and open square",
+      "epsg": 25833, "vertical_epsg": 7837, "bounds_m": [390788, 5818756, 391228, 5819196], "kind": "berlin",
+      "buildings_urls": [
+        "https://gdi.berlin.de/data/a_lod2/atom/LoD2_390_5818.zip",
+        "https://gdi.berlin.de/data/a_lod2/atom/LoD2_391_5818.zip",
+        "https://gdi.berlin.de/data/a_lod2/atom/LoD2_390_5819.zip",
+        "https://gdi.berlin.de/data/a_lod2/atom/LoD2_391_5819.zip"
+      ],
+      "terrain_url": "https://gdi.berlin.de/data/dgm1/atom/DGM1_390_5818.zip"
+    },
+    {
+      "id": "utrecht", "name": "Utrecht Lombok–Kanaalstraat", "role": "paper_b_heldout", "form": "lower-rise row houses, narrow streets and canal edge",
+      "epsg": 28992, "vertical_epsg": 5709, "bounds_m": [135145, 455634, 135585, 456074], "kind": "netherlands"
+    }
+  ]
+}
