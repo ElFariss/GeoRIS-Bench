@@ -25,7 +25,7 @@ class BenchZrisTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             validate_mesh_pair(64, 81, 128, 161)
 
-    @unittest.skipUnless(__import__('pathlib').Path('bench/CoupledRIS-Bench/physics/array_256/mesh_validation.json').exists(), 'needs the packaged data artifact')
+    @unittest.skipUnless(__import__('pathlib').Path('bench/CoupledRIS-Bench/physics/array_256/81/impedance.h5').exists(), 'needs the packaged data artifact')
     def test_packaged_array_256_coarse_only_validation_metadata(self):
         import json
         from pathlib import Path

@@ -1,0 +1,91 @@
+# Hybrid Track 2 development gates (criteria frozen 2026-11-08)
+
+Declared 2026-11-07 22:32:40 WIB, before the first coarse P3 outcome (22:35:40 WIB). The full P3 rescore was finalized at 22:40:22 WIB. The declaration time is the file birth time (`stat`); criteria below are unchanged. This document records a development-only evaluation. No selector optimization or training is authorized by this track. P1/P2 status remains in `docs/hybrid-gates-v2-20261107.md`; the original P2 failure and later fix1 pass are both retained.
+
+## Fixed P3 protocol (declared before opening combined-run outcome rows)
+
+- Source actions: `outputs/runs/pair_plus_ladder_v2_combined_n3/combined_dev161.jsonl`; compare `pair_plus_b35` against `pair`, `pair_plus_b0`, `pair_plus_b3`, and `pair_plus_b5` at the 50 ms budget. Any unavailable method/action is reported as missing; no substitute is silently selected.
+- Rescore those exact bit states on the matching 81-segment `coupled_wire_dev_v1` frames, all 480 frames / 30 trajectories. Frame matching is by registered scenario row identity and user coordinates, never by nearest-neighbor tolerance alone. The 81-segment dataset hash and scenario hash are recorded before scoring.
+- Primary mesh-only comparison must evaluate each exact action on both 81- and 161-segment matrices using one common 81-derived all-OFF RZF precoder for that frame. A per-mesh reoptimized-precoder result is secondary and labeled sensitivity. The raw 161 run `rate` uses the benchmark’s fine-derived W and is descriptive only; it cannot establish mesh-only shift. If verified 161 matrices are unavailable, the mesh-only P3 result remains incomplete.
+- For each method/action report paired per-frame worst-user SE, paired difference from `pair`, signed mean and median shift, median and 95th percentile absolute shift, maximum absolute shift, per-trajectory means, and action-ranking reversals against the 161-segment source ordering. Report Spearman/Kendall rank associations as descriptive.
+- Uncertainty uses a paired bootstrap over the 30 trajectories (10,000 resamples, seed 8251, percentile 95% intervals). No frame-level resampling. A contrast is called directionally stable only if its interval excludes zero on both meshes with the same sign; otherwise label it mesh-sensitive or unresolved. This is a descriptive stability rule, not a universal physical error bound. No optimizer or model selection uses these results.
+- If the source 161 outputs cannot be paired to every local 81 frame or do not preserve exact actions, P3 is reported partial; no interpolation or test data.
+
+## Fixed P4 protocol (declared before ray-trace/NEC measurements)
+
+- Compare one direct LOS geometry with matching NEC-centered ports. Preserve complex phase reference, polarization basis, and port ordering. Report complex relative error, amplitude ratio, wrapped phase error, and polarization projection/cross-polar leakage separately.
+- Numerical agreement criteria: complex relative error <= 1%; wrapped phase error <= 0.01 rad; co-polar amplitude ratio in [0.99, 1.01]; cross-polar leakage absolute ratio <= 0.01. These are fixed engineering acceptance criteria, not claims of universal Sionna or NEC accuracy. If a quantity is undefined under the chosen polarization, report it as not applicable with the reason.
+- No fitted per-frame scale or phase offset is permitted. Only a single geometry-independent convention conversion documented before comparison may be applied.
+- For RIS-loaded direct channel, compare (a) traced free-space direct channel and (b) direct channel with the already-declared open-gap correction `D(Z_EE,free + dZ) - D(Z_EE,free)`. Report both against direct NEC; the correction cannot be tuned from the comparison.
+- Synthetic or toy geometries are software checks only. P4 remains open for Munich until the actual Munich LOS path, NEC-center mapping, pinned tracer version and full correction are all measured under this protocol.
+
+## Resource and scope constraints
+
+- GPU ray tracing only on 3060-1, no competing NEC generation on that node. Never use 3060-2 or 3060-3; never read or score any test split.
+- NEC scale probe is CPU-side. A 256x161 complex128 dense matrix alone needs about 27.2 GB. Do not launch that case. First assess a bounded RIS-only 128-element x 81-segment case, one worker, recording peak RSS and elapsed time; stop if memory headroom is inadequate. A100 VRAM is not NEC CPU memory.
+- Raw OSM/mesh/path files remain local and are not redistributed. No git, Sheets, manuscript, optimizer, or training actions.
+
+## Results and provenance
+
+Results, code/input hashes, run manifests and any incomplete-gate classifications are appended below only after each artifact is validated. Existing gate evidence and historical failures are immutable.
+
+## P3 result: matched DEV actions at 81/161 segments
+
+The exact fine development set was recovered read-only from RX6600 at `/var/tmp/atomwise-ris-gen-20261106/data/processed/coupled_wire_dev_fine161`. Only `frame_*.npz` and `.json`, `scenario.json`, and `generation_status.json` were copied into the new Track 2 output root. Local validation confirms all 480 expected indices are present, the generation manifest is complete/ready, and the fine scenario references the exact coarse DEV scenario SHA-256 `e78ddb7f5c551133efb271e968f2c49c5742391f43ba8178cbb0334fc43426cf`. The 480 per-frame hashes in the P3 result match the fine readiness manifest. The test splits were not opened.
+
+`pair`, `pair_plus_b0`, `pair_plus_b3`, `pair_plus_b5`, and `pair_plus_b35` actions from the combined 161 DEV run were taken at 50 ms, all 10 seeds, all 480 frames. Each action was scored on both 81- and 161-segment network matrices using the **same per-frame 81-segment all-OFF RZF precoder**. The paired bootstrap resampled the 30 trajectories, not the 480 frames. Intervals exclude zero with the same sign on both meshes for each candidate contrast against `pair`:
+
+| Candidate minus pair | 81 common W mean [95% CI] | 161 common W mean [95% CI] | trajectories positive (81) |
+|---|---:|---:|---:|
+| b0 | -0.026 [-0.035, -0.017] | -0.026 [-0.034, -0.019] | 0/30 |
+| b3 | +0.050 [+0.021, +0.082] | +0.058 [+0.026, +0.094] | 22/30 |
+| b5 | +0.039 [+0.014, +0.066] | +0.027 [+0.002, +0.054] | 20/30 |
+| b35 | +0.109 [+0.074, +0.145] | +0.085 [+0.053, +0.118] | 28/30 |
+
+The per-action mesh shifts are much larger than these method-level mean contrasts. Across all 480 frames, the maximum absolute rate shift is 1.274 bit/s/Hz (same worst case across methods); b35 median absolute shift is 0.164 and its 95th percentile is 0.729 bit/s/Hz. Pairwise method-action ordering between meshes reverses on 115/480 frames for b35 versus `pair`, 113/480 for b35 versus b3, and 111/480 for b35 versus b5. Thus the paired method contrast directions are stable in this DEV sample while selected-action rates and rankings show substantial mesh sensitivity. This is not a mesh-convergence pass or a universal error bound.
+
+The original saved `combined_dev161.jsonl` reports each 161 rate with its own fine-derived precoder. Those raw rates are retained in the artifact as a separate descriptive field; they are excluded from the mesh-only shift and contrast calculations. The first coarse-only P3 output and first full-rescore output are preserved; `p3_mesh_rescore_v2.json` is the authoritative result after adding exact frame-hash verification and dual-mesh paired contrasts.
+
+- Runner: `scripts/score_hybrid_p3_dev.py`; focused helper tests: `tests/test_hybrid_track2.py` (3 passed).
+- Result: `outputs/runs/hybrid_track2_20261108/p3_mesh_rescore_v2.json`; SHA-256 `9a59eba9adb7dd73af8cc232787c32f3f59b8d31220e931da6b26562b6a0ef8c`.
+- Source row file SHA-256: `f334639c84b2d847ad7bf4ebc3309db3c536d8e10e3f78c86e7774e125f3cd65`.
+- Fine generation manifest SHA-256: `2b2dc350fa8e47b37e139379ea2d3f166e974a7a44356f848e852f5f47df6c86`; fine scenario SHA-256: `101b49a99966ab49b553163ba97dd32b9b157b96fef2c9fd94a3df20f49559dc`.
+- Run: `OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 MKL_NUM_THREADS=1 PYTHONPATH=src python scripts/score_hybrid_p3_dev.py --output outputs/runs/hybrid_track2_20261108/p3_mesh_rescore_v2.json`.
+
+## P4 bounded Munich LOS plumbing smoke (not a gate result)
+
+A one-link LOS-only ray-tracing smoke was completed on 3060-1 using the pinned remote environment (`sionna-rt 2.0.1`, `mitsuba 3.8.0`, default RT variant `cuda_ad_mono_polarized`). The source was one registered BS coordinate and the receiver was the first point of the **NEC** 8x8 lattice, derived from `ris_center`, `panel_normal`, 28 mm tangent pitch, and 30 mm vertical pitch. The legacy `layout.cells` 20x13-mm scalar probe was deliberately not used. The trace took 0.753 s and returned one CIR coefficient and one delay; no path export or raw mesh was copied. The compact result, which records all 64 NEC center coordinates for reproducibility, is `outputs/runs/hybrid_track2_20261108/munich_los_smoke.json` (SHA-256 `a72779e9f41f8acb62bf183dce2a6394b0fbc7093e943ff82c34fccece681334`).
+
+This only establishes that a pinned, bounded Munich LOS path can be traced to a correctly mapped NEC-center coordinate. It is **not P4 evidence**: no independent NEC incident-field/port response, complex channel convention bridge, polarization projection, or open-gap correction was measured. No scale or phase was fitted. Therefore P4 remains **OPEN / NOT EVALUATED**, and the fixed tolerances above remain unchanged. The P4 comparison helper is `src/atomwise_ris/hybrid/p4_calibration.py`; it computes error metrics without fitting and rejects zero/shape-invalid references. Four focused tests pass in `tests/test_hybrid_p4_calibration.py`.
+
+### Predeclared UE selection rule for an independent NEC reference
+
+Before checking training coordinates, choose one LOS UE as follows: restrict to rows whose registered `split` is `train`; order by original row index ascending, then user index 0 before 1; use registered BS 0; test all candidate receiver coordinates in one Sionna RT 2.0.1 direct-only query (`max_depth=0`, `los=True`, all reflection/diffraction/refraction modes disabled, seed 7). Select the first row/user with a finite, nonzero single-path CIR coefficient. This is an LOS-validity selection rule only; it does not inspect performance, NEC outputs, labels, or test data. If no candidate passes, stop without substituting another split or changing the rule.
+
+The rule selected training row 20, trajectory 5, user 1 (the 42nd candidate checked), at `[35.2, 20.475, 1.5]` m from BS0 `[-210,72.9593409867,105]` m. The query returned one direct path at 5.53 GHz. This coefficient is saved only as LOS-selection evidence; the NEC reference program reads the selected coordinates and never uses the coefficient to scale, phase-align, fit, or otherwise calibrate NEC/RT.
+
+Run provenance: script `scripts/hybrid_p4_munich_los_smoke.py` SHA-256 `ebab8ebe6e8d296ecc8a337f5265fd1b204ffd1d02ba9898cdf243d75f56b7de`; input layout SHA-256 `8fbf3861dfb061c73b0cf48de2caa0727582bc848323e130ac8de065b3ec7dd2`. Durable tmux session `p4-munich-los-20261108` on 3060-1; remote task directory `/var/tmp/atomwise-ris-hybrid-track2-20261108`; check with `test -f /var/tmp/atomwise-ris-hybrid-track2-20261108/DONE` (completed) or inspect `run_manifest.txt` and `run.log`. A first attempt failed before tracing because the layout file was absent from the remote project; the declared layout was copied as an input, then the corrected run completed. The retry script is `run_munich_los.sh` in that directory.
+
+## Follow-up retraces, fail-closed P4, and scale job
+
+The 3060-1 GPU recheck showed GPU0 with 7175 MiB free and 0% utilization while another user's Python process held 4726 MiB; GPU1 had 6072 MiB free and 98–100% utilization. Only bounded one-link smoke traces were run on GPU0. Using the pinned Sionna RT 2.0.1 environment and default `cuda_ad_mono_polarized` variant, the `simple_street_canyon` smoke returned four paths in 0.929 s at the registered open roadway coordinates `[-20,0,1.5]`→`[20,0,1.5]`; the built-in `san_francisco` smoke returned one path in 0.689 s at `[-30,0,10]`→`[30,0,10]`. Compact coefficient/delay JSON only was copied. These are scene plumbing smokes, not hybrid validations. San Francisco is the package's pinned built-in urban scene; this run did not establish its source as the specifically requested new OSM dataset, so the new-OSM retrace remains outstanding. No raw mesh or path file was copied.
+
+`scripts/evaluate_hybrid_p4.py` is a fail-closed evaluator for the declared criteria. It requires a measured ray-traced `rt_direct_h`, independent monolithic NEC `nec_direct_h`, `Z_EE,free`, and a separately provenance-bound predicted open-gap `delta_z_open_gap_pred` from the RIS-alone fixed builder. It computes `rt_direct_h + (D(Z_EE,free + delta_z_pred) - D(Z_EE,free))` and compares both the uncorrected and corrected ray direct channels against the independent NEC open reference. The monolithic NEC delta-Z is reference truth only: it is rejected if supplied as the predictor or labeled as the source. The builder provenance must match the current `ray_coupling.py` hash and include hashes of RIS-only response, incident field, and external-only NEC inputs. No scale or phase fitting is performed. Historical `p4_gate_attempt.json` and `p4_gate_attempt_v2.json` are preserved; current `p4_gate_attempt_v3.json` uses available NEC truth only and fail-closes, explicitly rejecting the truth-derived legacy delta-Z field and listing absent RT direct and polarization-resolved incident fields. No independent comparison is fabricated. The exact command after the independent predicted inputs arrive is:
+
+```bash
+PYTHONPATH=src:scripts python scripts/evaluate_hybrid_p4.py \
+  --input outputs/runs/hybrid_track2_20261108/p4_independent_inputs.json \
+  --output outputs/runs/hybrid_track2_20261108/p4_gate_result.json
+```
+
+The approved RX6600 runtime was found at `/var/tmp/atomwise-ris-gen-20261106/.venv-em/bin/python` (NumPy 2.2.6, SciPy 1.15.3, PyNEC import available). A bounded CPU-only 128-element × 81-segment RIS-alone extraction completed in tmux session `zris-128x81-20261108` on `labkc1-amd`, with one OpenBLAS/OMP thread, a 24,000,000-KiB virtual-memory cap, and 30-minute timeout. The matrix itself was not saved. For 10,368 NEC unknowns, measured wall time was 252.394 s (NEC-reported 252.308 s), peak RSS 3,441,460 kB by `/usr/bin/time -v` and 3,524,055,040 bytes by `resource.getrusage`; reciprocity residual was `6.95e-8`. At launch the host reported 49 GiB available; all four existing V2 generation workers continued unchanged, and the probe was a single extra CPU process. JSON and manifest were copied to `outputs/runs/hybrid_track2_20261108/zris_128x81.json` (SHA-256 `ca31fe596503afd2e9f5f696848e346148bac485fa75c2e90557e3663a1dbcca`) and `zris_128x81_run_manifest.txt`. The 256-element cases remain excluded.
+
+The simple-canyon and San Francisco smoke artifacts and hashes are indexed in `outputs/runs/hybrid_track2_20261108/scene_smokes_manifest.json`. Their only transfers were compact JSON coefficient/delay summaries; no path export or mesh was copied. San Francisco built-in scene source provenance remains unverified for an OSM claim. Focused tests: 10 passed across P3 helpers and new P4 no-fit/fail-closed evaluation; new scripts compile. Remaining: actual calibrated Munich P4 incident-field comparison and a new OSM-provenance scene trace. P3 remains complete only within its declared DEV scope, not a physical convergence pass.
+
+## Independent Munich NEC direct/open reference completed
+
+Following the above selection, a separate monolithic 66-wire NEC run completed on `labkc1-amd`: 64 RIS wires at the same 28×30 mm Munich NEC lattice, one registered BS0 wire and the selected training UE wire; 81 segments/wire. The accompanying two-port BS+UE-alone NEC solve provides the no-RIS external reference. The runner stores full monolithic port `Z`, its external block, the corresponding no-RIS block, their fixed `delta-Z`, and `H_direct` from the same `-100 inv(Z_EE+50I)[UE,BS]` convention. This is independent NEC evidence, not yet a P4 pass; the Sionna selection coefficient is not read for calibration. Source: `scripts/hybrid_p4_nec_reference.py`; SHA-256 `2b1f7ee5c7c37b253f76a01016ea396a8cb4d2da81d67b4e17598ae044733845`. Selected input SHA-256 `26c83312e1789b5218a3802ffb4ff720d12e62e6086b711d93c4b5df7e5cc75e`; layout SHA-256 `8fbf3861dfb061c73b0cf48de2caa0727582bc848323e130ac8de065b3ec7dd2`.
+
+Durable tmux session `nec-p4-munich-ref-20261108` under `<rx6600>` completed with `DONE`. It used the existing `.venv-em` with PyNEC, one BLAS/OMP worker, 16,000,000-KiB virtual-memory cap, and 30-minute timeout; all four existing V2 generation workers remained active. The 66-wire matrix (5,346 unknowns) took 31.330 s; the monolithic port matrix reciprocity residual was `6.95e-8`. The independent artifacts are `outputs/runs/hybrid_track2_20261108/munich_los_nec_reference.npz` (SHA-256 `fe5b23c71c55caee8dba1beb583b3698b2347bdfd1a04a78a5dafb5b8a7dbfc7`) and `munich_los_nec_reference.json` (SHA-256 `d376bd30e31d060ff96d8be79478456d8efcea5523dad297b292fea99ea217eb`), with copied run manifest `munich_los_nec_reference_run_manifest.txt`. The NPZ was read back and verified to contain `Z_full` (66×66), monolithic and no-RIS `Z_EE` blocks, their `delta-Z`, both direct `H` values, and all RIS/BS/UE coordinates.
+
+The physical RT-to-field conversion remains unvalidated: the scalar isotropic path coefficient and selected delay do not supply polarization-resolved electric-field vectors at every NEC segment center. No segment-field conversion or cross-polar claim is made. The v3 fail-closed artifact pair `p4_gate_attempt_v3_input.json` / `p4_gate_attempt_v3.json` is based on the available NEC reference and rejects its truth-derived delta-Z as a predictor. It lists missing absolute mapping, RT direct channel, predicted delta-Z provenance, and incident scalar/vector responses. No tolerance changed. Reference hashes: NPZ `fe5b23c71c55caee8dba1beb583b3698b2347bdfd1a04a78a5dafb5b8a7dbfc7`, JSON `d376bd30e31d060ff96d8be79478456d8efcea5523dad297b292fea99ea217eb`; v3 blocked result JSON `112c991509f6994f992f7310c9b50cfeb5d5bc9cb249d28940b78ddf0ee9911d`.

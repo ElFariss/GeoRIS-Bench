@@ -1,0 +1,25 @@
+{
+  "status": "complete",
+  "scope": "RIS-only NEC-2 port impedance; no BS/UE, no optimizer",
+  "frequency_hz": 5530000000.0,
+  "elements": 64,
+  "array_rows": 8,
+  "array_columns": 8,
+  "segments_per_wire": 161,
+  "nec_unknowns": 10304,
+  "elapsed_wall_s": 189.5596094079956,
+  "nec_reported_s": 189.46882805399946,
+  "peak_rss_bytes": 3498635264,
+  "matrix_shape": [
+    64,
+    64
+  ],
+  "reciprocity_relative_fro": 8.001417571775232e-09,
+  "minimum_hermitian_resistance_eigenvalue_ohm": 0.5401026742462902,
+  "maximum_scattering_singular_value": 0.986641752042871,
+  "condition_number_2": 13.697646916639668,
+  "z_frobenius_norm_ohm": 821.4067129342818,
+  "z_max_abs_ohm": 84.80440491978193,
+  "hdf5_path": "/var/tmp/bench-tracks-zris-20261108/physics/array_64/161/impedance.h5",
+  "hdf5_sha256": "b101605e7a9161bb7b0ce69466ad8af6a9f1b0d0825ec937473458801f6cd91b"
+}

@@ -1,0 +1,48 @@
+{
+  "elements": 128,
+  "status": "pass",
+  "mesh": {
+    "relative_frobenius_difference": 0.00877636650910491,
+    "maximum_entry_difference_over_fine_frobenius": 0.00022951695765290893,
+    "limits": {
+      "relative_frobenius_difference": 0.05,
+      "maximum_entry_difference_over_fine_frobenius": 0.1
+    },
+    "pass": true
+  },
+  "matrices": {
+    "81": {
+      "reciprocity_relative_fro": 6.945885437548736e-08,
+      "minimum_hermitian_resistance_eigenvalue_ohm": 0.02731681204989647,
+      "maximum_scattering_singular_value": 0.9993265816521343,
+      "condition_number_2": 21.76563639405736,
+      "checks": {
+        "reciprocity": true,
+        "passivity": true,
+        "scattering_contraction": true
+      },
+      "hdf5_sha256": "458f195cea6a3eb09ce9f8f9d692f75d54bdafd85bd33f724d82d9ba6679a564",
+      "metrics_sha256": "ad680094fc145e56eae81ece3846390f431c7144e1ff68a09f504ec1816825fd",
+      "elapsed_wall_s": 232.87564489798388,
+      "peak_rss_bytes": 3541270528
+    },
+    "161": {
+      "reciprocity_relative_fro": 1.2206906402572636e-08,
+      "minimum_hermitian_resistance_eigenvalue_ohm": 0.026742544556708436,
+      "maximum_scattering_singular_value": 0.9993387708043288,
+      "condition_number_2": 21.847712468387634,
+      "checks": {
+        "reciprocity": true,
+        "passivity": true,
+        "scattering_contraction": true
+      },
+      "hdf5_sha256": "e4cdb52b9fd0c0779c981cddff8d0e1ba7d92c5252508e120b5f1aef6b38b85d",
+      "metrics_sha256": "4180fcbce4f02400f9be62db7d85b4e8356bb4c64e809df433b5d54acee5b66d",
+      "elapsed_wall_s": 1508.1266828269872,
+      "peak_rss_bytes": 13746847744
+    }
+  },
+  "geometry_sha256": "cb4b9c51ba35cc05af06e75e34f06fca81c926dac5db4d58892c60f827a3176c",
+  "combined_sha256": "c89280f3487ac48a9de95ce040f7442f88429529dcc39dcc2c1309ee8d812afb",
+  "mesh_validation_sha256": "0b6e2f86b98dc6ccf4cb6152d70906609ccaf1a4dd5ffb71d882aa61108160e2"
+}

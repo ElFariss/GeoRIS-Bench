@@ -1,0 +1,28 @@
+{
+  "status": "coarse_only_161_not_extracted_memory_cap",
+  "elements": 256,
+  "coarse_segments": 81,
+  "fine_segments": null,
+  "fine_segments_extracted": false,
+  "fine_segments_omission_reason": "161-segment mesh for 256 elements (41,216 NEC-2 unknowns, ~27.18 GB per dense complex128 matrix copy) exceeded the 53.5 GiB virtual-memory cap during nec_factor_factrs_openmp; approved decision is to package the 81-segment mesh only.",
+  "coarse_reciprocity_relative_fro": 5.020040702242259e-08,
+  "supporting_mesh_delta_trend": {
+    "64": {
+      "coarse_segments": 81,
+      "fine_segments": 161,
+      "relative_frobenius_difference": 0.0062785713677590005,
+      "maximum_absolute_entry_difference_ohm": 0.2511560926369001,
+      "maximum_entry_difference_over_fine_frobenius": 0.00030576337967789933,
+      "median_diagonal_relative_difference": 0.0025167284511678047
+    },
+    "128": {
+      "coarse_segments": 81,
+      "fine_segments": 161,
+      "relative_frobenius_difference": 0.00877636650910491,
+      "maximum_absolute_entry_difference_ohm": 0.28150938792843627,
+      "maximum_entry_difference_over_fine_frobenius": 0.00022951695765290893,
+      "median_diagonal_relative_difference": 0.002435301278733899
+    }
+  },
+  "interpretation": "256-element bundle uses the 81-segment NEC-2 discretization only (161-segment extraction omitted under the 53.5 GiB memory cap); 64- and 128-element 81-vs-161 mesh deltas (< 0.88% relative Frobenius, ~0.25% median diagonal) provide the supporting discretization sensitivity trend."
+}

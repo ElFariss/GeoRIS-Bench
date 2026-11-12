@@ -1,0 +1,53 @@
+{
+  "elements": 256,
+  "status": "pass",
+  "mesh": {
+    "mode": "coarse_only_161_not_extracted_memory_cap",
+    "coarse_segments": 81,
+    "fine_segments": null,
+    "fine_segments_extracted": false,
+    "supporting_mesh_delta_trend": {
+      "64": {
+        "coarse_segments": 81,
+        "fine_segments": 161,
+        "relative_frobenius_difference": 0.0062785713677590005,
+        "maximum_absolute_entry_difference_ohm": 0.2511560926369001,
+        "maximum_entry_difference_over_fine_frobenius": 0.00030576337967789933,
+        "median_diagonal_relative_difference": 0.0025167284511678047
+      },
+      "128": {
+        "coarse_segments": 81,
+        "fine_segments": 161,
+        "relative_frobenius_difference": 0.00877636650910491,
+        "maximum_absolute_entry_difference_ohm": 0.28150938792843627,
+        "maximum_entry_difference_over_fine_frobenius": 0.00022951695765290893,
+        "median_diagonal_relative_difference": 0.002435301278733899
+      }
+    },
+    "limits": {
+      "relative_frobenius_difference": 0.05,
+      "maximum_entry_difference_over_fine_frobenius": 0.1
+    },
+    "pass": true
+  },
+  "matrices": {
+    "81": {
+      "reciprocity_relative_fro": 5.0200407022422544e-08,
+      "minimum_hermitian_resistance_eigenvalue_ohm": 0.0005497310458637459,
+      "maximum_scattering_singular_value": 0.9999873282994505,
+      "condition_number_2": 97.81936732123926,
+      "checks": {
+        "reciprocity": true,
+        "passivity": true,
+        "scattering_contraction": true
+      },
+      "hdf5_sha256": "3ec59f5eb1af3ba7542e6b1d99f377d18bb7fa96092ff9e9a217514766d4a657",
+      "metrics_sha256": "1e24905357ae9fce61cbea4d0eb54febd1ee140cfeadb8b3f8a374bc29cc89f6",
+      "elapsed_wall_s": 1948.428345727967,
+      "peak_rss_bytes": 13918322688
+    }
+  },
+  "geometry_sha256": "43e89780f7ff6331d003f6c23857bf0786960c5f4bcca666bfe663d5ae383622",
+  "combined_sha256": "335295cec1e8007fd9add0954a1add93b782a62cca27a111d1375bf4546dbaf5",
+  "mesh_validation_sha256": "7e34241f67b69e32e3f078dcbbd7bb9fdf5298c3b6a3ad9a4361c723bad6652c"
+}

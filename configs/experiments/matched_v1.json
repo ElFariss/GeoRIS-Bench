@@ -1,0 +1,235 @@
+{
+  "status": "Locked 2026-11-06 at 2026-11-06T10:40:24Z before any test outcomes: the predeclared validation rule selected 50 ms for both experiments after 10 ms deadline misses. 10 ms remains the preferred budget only if all methods meet deadline; 50 ms is the current frozen primary, with 100 ms as the next fallback. Earlier phase archived at configs/experiments/archive/matched_v1-pre-gatefix-lock-20261106.json; original registration archived at configs/experiments/archive/matched_v1-registered-20261106.json.",
+  "purpose": "Compare memory, analytical and learned guidance under one shared search configuration on trajectories never seen during method design",
+  "experiments": {
+    "coupled": {
+      "run": "outputs/runs/matched_coupled_v1",
+      "train_validation_data": "data/processed/coupled_wire_v1 (train and validation splits only)",
+      "test_data": "data/processed/coupled_wire_test_v1",
+      "test_trajectories": 30,
+      "frames_per_trajectory": 16,
+      "test_rng_seed": 20261106,
+      "test_sampling": "continuous uniform over the bounding box of existing user start positions and velocities; same physics, surface and segments (81)"
+    },
+    "specular": {
+      "run": "outputs/runs/matched_specular_v1",
+      "train_validation_data": "data/processed/munich_specular_v3 (train and validation splits only)",
+      "test_data": "data/processed/munich_specular_test_v1",
+      "test_trajectories": 30,
+      "frames_per_trajectory": 4,
+      "test_rng_seed": 20261106,
+      "test_sampling": "new receiver trajectories from the same scene and ray-tracing parameters as munich_specular_v3"
+    }
+  },
+  "excluded_from_claims": "Existing pilot splits informed method design and are development data; they may be benchmarked for continuity only and never reported as the test result",
+  "scope_limit": "Held-out trajectories in the same scene and surface, not a held-out environment. Simulation only. Spatial control only; temporal forecasting is out of scope for this comparison.",
+  "node": "3060-1; all reported timing comes from one node, one pinned core, single thread, with no concurrent job of ours",
+  "seeds": [
+    7,
+    19,
+    43,
+    3,
+    11,
+    23,
+    31,
+    59,
+    67,
+    83
+  ],
+  "budgets_ms": [
+    1,
+    5,
+    10,
+    50,
+    100
+  ],
+  "primary_budget_ms": 50,
+  "methods": {
+    "baselines": [
+      "greedy",
+      "pair",
+      "random",
+      "population_ga"
+    ],
+    "uniform_ga": "memory on; anchors and hops ranked uniformly at random; lesion control for whether ranking matters",
+    "memory_ga": "memory on; ranking = normalized analytical gain + 0.1 * per-bit std of remembered patterns; no neural network. An adaptation inspired by Zardi et al. 2024, not a reproduction",
+    "analytical_ga": "memory on; ranking = normalized analytical gain",
+    "analytical_no_memory_ga": "as analytical_ga with memory disabled",
+    "mlp_ga": "memory on; ranking = analytical gain plus MLP policy",
+    "attention_ga": "memory on; ranking = analytical gain plus attention policy",
+    "attention_no_memory_ga": "as attention_ga with memory disabled",
+    "attention_no_physics_ga": "as attention_ga with explicit physics features removed; analytical flip gains retained (no-extra-physics-features ablation)"
+  },
+  "method_naming_and_baselines": {
+    "baseline_memory_policy": "No remembered patterns are supplied to greedy, pair, random, or population_ga in either experiment. The same policy applies in both experiments.",
+    "population_ga": "Separate model-free population genetic algorithm baseline in both experiments: population 12, tournament size 2, crossover probability 0.25, mutation selects one or two distinct bit indices with equal probability. The controller can accept remembered patterns, but the registered benchmark supplies none: initialization is all-OFF plus seeded random individuals to fill the population. No memory ranking, refinement or update. This is outside the shared-step ILS variant contrasts.",
+    "legacy_ga_suffix": "Legacy method IDs ending in _ga denote shared-step ranked iterated-local-search (ILS) hybrids, not population genetic algorithms. Do not call these variants GAs in claims."
+  },
+  "shared_search_config": {
+    "rule": "Every legacy *_ga ranked-ILS variant runs the same step sequence and limits. Variants differ only in the ranking signal, feature ablation, and whether memory is enabled. Neural overhead is paid from the same deadline. Greedy, pair, random, and population_ga receive no remembered patterns in either experiment; population_ga initializes from all-OFF plus seeded random individuals in both experiments.",
+    "primary": "medium",
+    "selection": "Medium equals the values previously assigned to analytical_ga, fixed here without consulting any matched result",
+    "specular": {
+      "small": {
+        "P0": 4,
+        "P1": 3,
+        "n_starts": 0,
+        "max_pol": 1,
+        "t_cap_fraction_short": 0.45,
+        "t_cap_max_ms_short": 3.2,
+        "t_cap_fraction_long": 0.5
+      },
+      "medium": {
+        "P0": 5,
+        "P1": 4,
+        "n_starts": 1,
+        "max_pol": 2,
+        "t_cap_fraction_short": 0.52,
+        "t_cap_max_ms_short": 3.8,
+        "t_cap_fraction_long": 0.58
+      },
+      "large": {
+        "P0": 6,
+        "P1": 5,
+        "n_starts": 4,
+        "max_pol": 4,
+        "t_cap_fraction_short": 0.65,
+        "t_cap_max_ms_short": 5.4,
+        "t_cap_fraction_long": 0.72
+      }
+    },
+    "coupled": {
+      "small": {
+        "K": 18,
+        "hop_K": 14
+      },
+      "medium": {
+        "K": 20,
+        "hop_K": 16
+      },
+      "large": {
+        "K": 28,
+        "hop_K": 20
+      }
+    },
+    "all_variants": {
+      "hop_idx": [
+        0,
+        1
+      ],
+      "secondary_hops": true,
+      "basin_crossover": true,
+      "neural_residual_weight_coupled": 0.12,
+      "neural_logit_weight_specular": 0.15,
+      "memory_bias_weight": 0.1
+    },
+    "sensitivity": "Small and large run on validation only, to show whether conclusions depend on the configuration. They are not used to change the primary."
+  },
+  "training": "Fresh checkpoints for every seed on 3060-1 from train and validation only; epochs and architectures unchanged",
+  "freeze_order": [
+    "train",
+    "validation benchmark",
+    "freeze budget and code hashes",
+    "test benchmark once",
+    "analysis"
+  ],
+  "metrics": {
+    "worst_user_spectral_efficiency": "mean minimum user rate in bit/s/Hz, full-evaluator recomputed",
+    "optimization_latency": {
+      "complete_runtime": "p95 elapsed ms, including preparation, features, inference, memory and evaluation",
+      "time_to_target": "first time within target_margin of the frame reference; median and p95; runs that never reach it count as not reached and the reached fraction is reported",
+      "frame_reference": "best rate found on that frame by any method and seed at any budget",
+      "target_margin_bit_s_hz": 0.015
+    },
+    "computational_budget": {
+      "evaluations": "mean count of candidate configurations scored, same counting rule for all methods; neural inference is not an evaluation and is reported as time",
+      "evaluations_to_target": "evaluations used when time_to_target is reached"
+    },
+    "deadline_misses": "reported per method and budget; never excluded"
+  },
+  "statistics": {
+    "unit": "trajectory, averaging seeds within trajectory",
+    "interval": {
+      "method": "paired trajectory bootstrap percentile interval with Bonferroni simultaneous family-wise coverage across all listed contrasts",
+      "resamples": 10000,
+      "seed": 8251,
+      "familywise_level": 0.95
+    },
+    "multiplicity": "Bonferroni simultaneous confidence intervals drive practical-margin decisions; separate Holm correction applies to centered-bootstrap two-sided p-values against zero",
+    "contrasts": [
+      "attention_ga - memory_ga",
+      "mlp_ga - memory_ga",
+      "analytical_ga - memory_ga",
+      "attention_ga - analytical_ga",
+      "memory_ga - pair",
+      "attention_ga - attention_no_memory_ga",
+      "analytical_ga - analytical_no_memory_ga",
+      "analytical_ga - uniform_ga",
+      "attention_ga - mlp_ga",
+      "attention_ga - attention_no_physics_ga",
+      "population_ga - analytical_ga"
+    ],
+    "practical_margin_bit_s_hz": 0.015,
+    "practical_margin_by_experiment": {
+      "coupled": {
+        "bit_s_hz": 0.015,
+        "status": "provisional; a coupled improvement claim requires the preselected fine-mesh returned-action audit described in mesh_audit_contract"
+      },
+      "specular": {
+        "bit_s_hz": 0.015,
+        "status": "borrowed from coupled-wire numerical evidence; sensitivity analysis only, not a validated specular numerical-error bound"
+      }
+    },
+    "decision": "Improved only when the Bonferroni simultaneous interval is wholly above +margin; deteriorated only when wholly below -margin; equivalent only when wholly inside [-margin,+margin]; otherwise inconclusive. Holm-adjusted p-values test zero difference separately and do not generate intervals. For coupled experiment, statistical improvement remains numerically unresolved unless the preselected returned-action fine-mesh audit passes its declared resolution criterion.",
+    "familywise_alpha": 0.05,
+    "p_value_method": "Two-sided centered paired trajectory bootstrap error distribution with add-one smoothing; Holm adjustment across contrasts. Trajectory resampling assumes exchangeable independent trajectories; small-n calibration limitations apply.",
+    "mesh_audit_contract": {
+      "required_for_coupled_improvement_claim": true,
+      "resolution_criterion_bit_s_hz": 0.015,
+      "resolution_criterion_basis": "Equal to the practical margin: a gain of that size counts as numerically resolved only if the audited maximum absolute rate difference does not exceed it. Declared 2026-11-06 before validation, freeze, and any test benchmark of the matched controllers.",
+      "execution_rule": "The audit runs only if at least one coupled contrast is otherwise decided improved. Without it, those contrasts are reported as numerically unresolved.",
+      "must_be_preselected_before_test_actions_are_scored_on_fine_mesh": true,
+      "must_audit": "all primary-budget returned binary actions for every method, seed, frame and held-out trajectory, including reference methods",
+      "minimum_json": {
+        "protocol_sha256": "hash of amended protocol",
+        "preselected_before_test_evaluation": true,
+        "split": "test",
+        "segment_count_coarse": 81,
+        "segment_count_fine": 161,
+        "audited_action_count": "integer equal to number of primary-budget returned actions",
+        "rate_difference_abs_max_bit_s_hz": "finite number",
+        "resolution_criterion_bit_s_hz": "predeclared finite positive number",
+        "criterion_passed": "boolean"
+      },
+      "interpretation": "The 0.015 margin is not a general mesh-error bound. If the audit is missing or fails, coupled statistical results remain reportable but any improvement claim is withheld as numerically unresolved. The audit does not alter actions or tune the method."
+    }
+  },
+  "preferred_budget_ms": 10,
+  "budget_lock": {
+    "locked_utc": "2026-11-06T10:40:24Z",
+    "rule": "Prefer 10 ms only if every protocol method has zero validation deadline misses; otherwise select the first feasible larger listed budget. Lock the selected validation budget as primary before test execution; a later primary-budget miss may fall only to the next feasible larger budget, never back to 10 ms.",
+    "evidence": {
+      "prior_protocol_sha256": "a033b2866c154ecf296c495673e810e03d6ddd594d8ab32cd8dbb3c42be1edfe",
+      "specular": {
+        "selection_path": "outputs/runs/matched_specular_v1/budget_selection.json",
+        "selection_sha256": "48225d56302c92cbaf59d618fcfc44cf6f0052a4c936ba6dfef304f201d26966",
+        "input_path": "outputs/runs/matched_specular_v1/benchmark_validation.jsonl",
+        "input_sha256": "f79fcad0d5d944bdc7cad4717372df51e92fd23e9e427683bc0c71277a0f7bb8",
+        "selection_frozen_utc": "2026-11-06T09:25:22.326695+00:00",
+        "misses_10ms": 1,
+        "misses_50ms": 0,
+        "selected_ms": 50
+      },
+      "coupled": {
+        "selection_path": "outputs/runs/matched_coupled_v1/budget_selection.json",
+        "selection_sha256": "67bc95b8808728e3fa8e24b67e89dc1b1496ead3884e9a6a509ef78006bea435",
+        "input_path": "outputs/runs/matched_coupled_v1/benchmark_spatial_validation.jsonl",
+        "input_sha256": "4f0eb966d0be4da83b76b78ac83f232595a4d8f2764377b6f3ae7fa0508b72db",
+        "selection_frozen_utc": "2026-11-06T09:46:49.504213+00:00",
+        "misses_10ms": 6,
+        "misses_50ms": 0,
+        "selected_ms": 50
+      }
+    }
+  }
+}

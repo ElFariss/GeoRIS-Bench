@@ -1,0 +1,99 @@
+{
+  "phase": "0b",
+  "date": "2026-11-08",
+  "status": "audit_complete_pending_map_approval",
+  "phase1_authorized": false,
+  "release_approved": false,
+  "heldout_activities": "geometry-only source and terrain audit; no held-out propagation",
+  "map_proposals": [
+    {
+      "id": "munich",
+      "role": "development",
+      "epsg": 25832,
+      "vertical_epsg": 7837,
+      "bounds_m": [
+        691383,
+        5334560,
+        691823,
+        5335000
+      ]
+    },
+    {
+      "id": "rotterdam",
+      "role": "development",
+      "epsg": 28992,
+      "vertical_epsg": 5709,
+      "bounds_m": [
+        92286,
+        436839,
+        92726,
+        437279
+      ]
+    },
+    {
+      "id": "maastricht",
+      "role": "development",
+      "epsg": 28992,
+      "vertical_epsg": 5709,
+      "bounds_m": [
+        175967,
+        316952,
+        176407,
+        317392
+      ]
+    },
+    {
+      "id": "berlin",
+      "role": "paper_a_heldout",
+      "epsg": 25833,
+      "vertical_epsg": 7837,
+      "bounds_m": [
+        390788,
+        5818756,
+        391228,
+        5819196
+      ]
+    },
+    {
+      "id": "utrecht",
+      "role": "paper_b_heldout",
+      "epsg": 28992,
+      "vertical_epsg": 5709,
+      "bounds_m": [
+        135145,
+        455634,
+        135585,
+        456074
+      ]
+    }
+  ],
+  "simulation_smoke": {
+    "maastricht": "stopped_pretrace_no_qualifying_dtm_patch",
+    "munich": "pass_single_fixed_dual_pol_los_smoke",
+    "terrain_rf_interactions": false,
+    "p4": "open"
+  },
+  "artifacts_sha256_by_repo_path": {
+    "configs/bench/phase0b-area-proposals-20261108.json": "2b96f9b35221445bc3601cb456d46f4451f1c9822fcd9d4c7c050854a5f34f85",
+    "bench/CoupledRIS-Bench/README.md": "8e1d01745096065693231db10babff4cb5d3edb4b0c42fda9b3da50e311a4ed3",
+    "bench/CoupledRIS-Bench/LICENSES/phase0b-map-sources.md": "7f6a3648ea28591de711269d8d6b471e777c50f0ab83d8c0b64ec28f03be8166",
+    "docs/bench-phase0b-map-audit-design-20261108.md": "93a85ae3d1e896ad3b4f9618c75a4bf1374bd3a59ce6c8000fc257582300662e",
+    "docs/bench-phase0b-munich-smoke-design-20261108.md": "2b60a6c1f845c89f4c0cbaef0c2d3c633ce3a3587aacce33a155e14ffaeae51a",
+    "docs/bench-phase0b-feasibility-20261108.md": "5f5ec50f25d2075a159b995082c1d7c71f8dcb8b8ad88717ae911c474e893a9a",
+    "docs/codex-handoff-bench-phase0b-20261108.md": "5d3a3d5479a7cbd280d3495be03a3b979fdfda42fd257ec5749fe46591e10b9f",
+    "scripts/fetch_bench_map_audit.py": "32f61ee86605c9589bca1065ec96e189d7853d41b520e3da9df3818495c347a7",
+    "scripts/audit_bench_area_coverage.py": "d642a08a8edaf75f8f25d198d43d602f9ba91655d716600797cd173b10830c8e",
+    "scripts/audit_bench_munich_smoke.py": "9da3a701d89935b2c9f5dfe4a49dc0734517dbe16456ae340c0b6a61c3c60c2b",
+    "scripts/run_bench_munich_smoke.sh": "eb241e3944725ea1630b96afc7ad3aafa661965a3065ab0de98b2fe6f73c06e2",
+    "scripts/build_bench_phase0b_scene.py": "bad6c6465ab75a070675eba91f4dd627bf02e4b1eacd8de705295e300351585f",
+    "scripts/run_bench_phase0b_scene.sh": "af0826f1369a52a8e5f30aba7c7dbf59efb105af966444d6f03a64b25622e86c",
+    "outputs/audits/bench-phase0b-20261108/map_downloads.json": "9ea282e215cf2b754c6cb5ec3dcb7e1fcaefda4f080aee5c9e327b045f173514",
+    "outputs/audits/bench-phase0b-20261108/area_coverage.json": "06cebf16fe9175a71efbb2ec0bfb7220714c272b65cca0313d15b63fab41774b",
+    "outputs/audits/bench-phase0b-20261108/munich_feasibility.json": "28ad5b19c2747c454724110a0a6c57744f3e65564e85d1367e326720a0660cd5",
+    "outputs/audits/bench-phase0b-20261108/feasibility.json": "1edbc37fef07cef5bf02edf1adcb560e8400626843dba0a9dd7fd66ef7f24051",
+    "outputs/audits/bench-phase0b-20261108/feasibility.log": "103397c08a13a73b12c1a3e597a0fe1fe8549cbc9bc96b5295d42626d44f21bb",
+    "outputs/audits/bench-phase0b-20261108/geo_audit_requirements.txt": "d0c99d9b28d7e7c517b5f20cf9076215c332f51afe9cae8adf74838546751259",
+    "outputs/audits/bench-phase0b-20261108/geometry_acquisition.log": "1ac3275776334d6c8b4999ab37cd0c1a697ebbb4ded51e5c50c24d53a8e11108",
+    "outputs/audits/bench-phase0b-20261108/unittest-final.log": "442a2729a4f50f9566a5f97d628c4a8d84426998f5a2f01c325e9c56df4158c5"
+  }
+}

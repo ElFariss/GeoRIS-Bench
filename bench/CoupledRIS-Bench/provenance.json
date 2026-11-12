@@ -1,0 +1,118 @@
+{
+  "benchmark": "CoupledRIS-Bench",
+  "phase": 0,
+  "record_date": "2026-11-08",
+  "status": "audit_complete_pending_user_decision",
+  "release_approved": false,
+  "phase1_authorized": false,
+  "source_verdicts": [
+    {
+      "id": "osm-fresh-extracts",
+      "recommendation": "go",
+      "license_evidence": "ODbL-1.0",
+      "scope": "Attribution and derivative database obligations",
+      "approved_for_release": false
+    },
+    {
+      "id": "sionna-rt-2.0.1",
+      "recommendation": "go",
+      "license_evidence": "Apache-2.0",
+      "scope": "Pinned dependency; excludes scene data",
+      "approved_for_release": false
+    },
+    {
+      "id": "sionna-munich",
+      "recommendation": "go",
+      "license_evidence": "ODbL-1.0",
+      "scope": "Native scene via dependency; OSM terms",
+      "approved_for_release": false
+    },
+    {
+      "id": "sionna-etoile",
+      "recommendation": "go",
+      "license_evidence": "ODbL-1.0",
+      "scope": "Native scene via dependency; OSM terms",
+      "approved_for_release": false
+    },
+    {
+      "id": "sionna-florence",
+      "recommendation": "go",
+      "license_evidence": "ODbL-1.0",
+      "scope": "Native scene via dependency; OSM terms",
+      "approved_for_release": false
+    },
+    {
+      "id": "sionna-san-francisco",
+      "recommendation": "go",
+      "license_evidence": "ODbL-1.0",
+      "scope": "Native scene via dependency; OSM terms",
+      "approved_for_release": false
+    },
+    {
+      "id": "sionna-simple-street-canyon",
+      "recommendation": "go",
+      "license_evidence": "Apache-2.0 package notice",
+      "scope": "Synthetic scene, pinned dependency",
+      "approved_for_release": false
+    },
+    {
+      "id": "deepmimo-asu_campus_3p5",
+      "recommendation": "hold",
+      "license_evidence": null,
+      "scope": "Retraceable source and downstream rights unverified",
+      "approved_for_release": false
+    },
+    {
+      "id": "deepmimo-city_18_denver_3p5",
+      "recommendation": "hold",
+      "license_evidence": null,
+      "scope": "Retraceable source and downstream rights unverified",
+      "approved_for_release": false
+    },
+    {
+      "id": "deepmimo-O1_28",
+      "recommendation": "hold",
+      "license_evidence": null,
+      "scope": "Retraceable source and downstream rights unverified; precomputed paths unsuitable",
+      "approved_for_release": false
+    },
+    {
+      "id": "deepmimo-code-4.0.5",
+      "recommendation": "hold",
+      "license_evidence": null,
+      "scope": "Pinned local dependency only; conflicting redistribution notices",
+      "approved_for_release": false
+    },
+    {
+      "id": "pynec-2.3.4-necpp",
+      "recommendation": "go",
+      "license_evidence": "GPL solver notices; see audit",
+      "scope": "Numerical output from project-owned geometry only",
+      "approved_for_release": false
+    }
+  ],
+  "artifacts_sha256_by_repo_path": {
+    "pyproject.toml": "34a41d8e076ff9ca81ce430ebb6a96d72f96ba6d0b7e885d3c37946dacedf103",
+    "uv.lock": "cc5776e64a60fdc7df88383e25a4dcf0800ccc67d36d6597ffdb8ff29128cbf7",
+    "docs/bench-phase0-audit-20261108.md": "d34a02076edd47248611692d162d65cc94981247cd46a49d1a0de923135f2404",
+    "scripts/audit_bench_munich_export.py": "952dac511b920b8e862093b72b411b9f2b8c8de1226f7cf1136b81925fd3c110",
+    "scripts/audit_bench_phase0_rt.py": "04afcd1cddf7214b92d25a7d4179a1c2df183e6d73dd66e107f106db0e67ffce",
+    "scripts/run_bench_phase0_rt.sh": "ff089f8dd8157ba7cc9122c9eaa0056e7bc12ad16df79cb46720013b23935e32",
+    "bench/CoupledRIS-Bench/LICENSES/README.md": "154cfc86438f7e23ec018c3287bf6fda897428ccd296a3f789ca3b0fa06bbbfc",
+    "outputs/audits/bench-phase0-20261108/capabilities.json": "eabe133daa0aa90cdda1b81e281b5e2732f788f370353c290b53767e32c39e1a",
+    "outputs/audits/bench-phase0-20261108/export_connectivity.json": "ef8fc4c1c71d31abb8f9da6c25e083610befccbf17aecdf74d1fc8d1aec97706",
+    "outputs/audits/bench-phase0-20261108/geometry.json": "189ca6d98e24aa6eb4647048158d92be9c71e3cae28fab9a1561e648e383e793",
+    "outputs/audits/bench-phase0-20261108/prior_checkpoint_selection.json": "b8b5b5419207b77a0bf6a2e69a5e5a80852514d6349c5be19c37042d691c52ae",
+    "outputs/audits/bench-phase0-20261108/storage.json": "3ee07c5ac7a3ccb064734b0746c5fe00db6cfca8646f5db9313d4753ec3ef8b2",
+    "outputs/audits/bench-phase0-20261108/unittest.log": "e5eeda9ea4707adc580567f1b6616baceaad2cfe6381d23efe4cb2a2a2a54dbe"
+  },
+  "remote_render": {
+    "host": "labkc-comm1",
+    "path": "/var/tmp/atomwise-bench-phase0-20261108/results/munich_native_height_audit.png",
+    "sha256": "4a7d3d6993f94f4873e477c8a76d7f1e659b9f2145a14ba652b8a62f243a82c0",
+    "copied": false
+  },
+  "held_out_data_accessed": false,
+  "urban_propagation_dataset_generated": false,
+  "p4_status": "open"
+}

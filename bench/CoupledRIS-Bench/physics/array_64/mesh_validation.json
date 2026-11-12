@@ -1,0 +1,13 @@
+{
+  "status": "complete",
+  "elements": 64,
+  "coarse_segments": 81,
+  "fine_segments": 161,
+  "relative_frobenius_difference": 0.0062785713677590005,
+  "maximum_absolute_entry_difference_ohm": 0.2511560926369001,
+  "maximum_entry_difference_over_fine_frobenius": 0.00030576337967789933,
+  "median_diagonal_relative_difference": 0.0025167284511678047,
+  "coarse_reciprocity_relative_fro": 4.551570410818051e-08,
+  "fine_reciprocity_relative_fro": 8.001417571775232e-09,
+  "interpretation": "mesh sensitivity between these two NEC discretizations; not physical calibration"
+}
