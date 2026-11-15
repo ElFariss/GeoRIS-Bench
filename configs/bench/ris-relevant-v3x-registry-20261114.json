@@ -1,0 +1,14 @@
+{
+ "ee602f853abbef852481145d9f93dd2acc3656d459144f6160bc79d79e98ff82": {
+  "city": "maastricht",
+  "failed_indices": []
+ },
+ "4a22fadeb557edbff954b3ed0cf60bbbefb65fe096d755dbc87ef1fe9e5e73df": {
+  "city": "utrecht",
+  "failed_indices": []
+ },
+ "aa27f7edfc081db0c00e1953b1ced265abceb997bb49a2cd6b35798af06ea75c": {
+  "city": "berlin",
+  "failed_indices": []
+ }
+}
